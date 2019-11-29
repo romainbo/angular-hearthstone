@@ -1,0 +1,28 @@
+<!-- <p>list works!</p>
+<a routerLink="/cards/1">Lien 1</a>
+<a routerLink="2">Lien 2</a>
+<a [routerLink]="['/', 'cards', monPath]">Lien 3</a> -->
+
+<!-- {{ cards | json }} -->
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-border">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let card of cards">
+          <td>
+            <a [routerLink]="['/', 'cards', card.id]">{{ card.id }}</a>
+          </td>
+          <td>
+            <a [routerLink]="['/', 'cards', card.id]">{{ card.name }}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
