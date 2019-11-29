@@ -1,3 +1,7 @@
 <div class="container">
-  <p>Carte {{ id }} chargée !</p>
+  <ng-container *ngIf="card$ | async as card">
+    <h1>{{ card.name }}</h1>
+    <h5 [innerHTML]="card.text" class="my-3"></h5>
+    <img [src]="card.img" />
+  </ng-container>
 </div>

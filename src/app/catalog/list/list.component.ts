@@ -1,46 +1,26 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CardsService } from '../cards.service';
+import { Observable } from 'rxjs';
+import { Card } from '../cards.interface';
+import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: "app-list",
-  templateUrl: "./list.component.html",
-  styleUrls: ["./list.component.scss"]
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  // constructor(private route: ActivatedRoute) {}
+  cards$: Observable<Card[]>;
+  query: string;
+  constructor(private cardsService: CardsService) {}
 
-  cards = [
-    {
-      id: 1,
-      name: "jamais de test"
-    },
-    {
-      id: 2,
-      name: "jamais de test"
-    },
-    {
-      id: 3,
-      name: "jamais de test"
-    },
-    {
-      id: 4,
-      name: "jamais de test"
-    },
-    {
-      id: 5,
-      name: "jamais de test"
-    },
-    {
-      id: 6,
-      name: "jamais de test"
-    },
-    {
-      id: 7,
-      name: "jamais de test"
-    }
-  ];
+  ngOnInit() {
+    this.cards$ = this.cardsService.getCards('Battlegrounds');
+  }
 
-  constructor() {}
-
-  ngOnInit() {}
+  submit(myForm: NgForm) {
+    console.log(this.query);
+    console.log(myForm.errors);
+  }
 }

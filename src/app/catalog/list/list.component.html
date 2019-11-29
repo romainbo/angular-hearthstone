@@ -4,25 +4,80 @@
 <a [routerLink]="['/', 'cards', monPath]">Lien 3</a> -->
 
 <!-- {{ cards | json }} -->
-<div class="container">
-  <div class="table-responsive">
-    <table class="table table-border">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let card of cards">
-          <td>
-            <a [routerLink]="['/', 'cards', card.id]">{{ card.id }}</a>
-          </td>
-          <td>
-            <a [routerLink]="['/', 'cards', card.id]">{{ card.name }}</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<ng-container *ngIf="cards$ | async as cards">
+  <div class="container">
+    <form (ngSubmit)="submit(myForm)" #myForm="ngForm">
+      <div *ngIf="myForm.invalid" class="alert alert-danger">
+        Formulaire Invalide
+        <!-- <div *ngIf="myForm.errors.required" class="alert alert-danger">
+          Name is required.
+        </div>
+        <div *ngIf="myForm.errors.minlength" class="alert alert-danger">
+          Name must be at least 4 characters long.
+        </div> -->
+      </div>
+
+      <div class="d-flex flex-row col-6 justify-content-center">
+        <input
+          [(ngModel)]="query"
+          name="val1"
+          type="search"
+          required
+          minlength="3"
+          class="form-control"
+        />
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+
+    <div class="list-group">
+      <a
+        *ngFor="let card of cards"
+        [routerLink]="['/', 'cards', card.cardId]"
+        class="linkCard"
+      >
+        <div class="list-group-item  list-group-item-action">
+          <h3>{{ card.name }}</h3>
+          <h6 [innerHTML]="card.text"></h6>
+        </div>
+      </a>
+    </div>
+
+    <!-- <div class="table-responsive">
+      <table class="table table-border">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Set</th>
+            <th>Player Class</th>
+            <th>Effect</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let card of cards">
+            <td>
+              <a [routerLink]="['/', 'cards', card.cardId]">{{ card.dbfId }}</a>
+            </td>
+            <td>
+              <a [routerLink]="['/', 'cards', card.cardId]">{{ card.name }}</a>
+            </td>
+            <td>
+              <a [routerLink]="['/', 'cards', card.cardId]">{{
+                card.cardSet
+              }}</a>
+            </td>
+            <td>
+              <a [routerLink]="['/', 'cards', card.cardId]">{{
+                card.playerClass
+              }}</a>
+            </td>
+            <td>
+              <a [routerLink]="['/', 'cards', card.cardId]">{{ card.text }}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
   </div>
-</div>
+</ng-container>
