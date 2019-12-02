@@ -4,80 +4,147 @@
 <a [routerLink]="['/', 'cards', monPath]">Lien 3</a> -->
 
 <!-- {{ cards | json }} -->
-<ng-container *ngIf="cards$ | async as cards">
-  <div class="container">
-    <form (ngSubmit)="submit(myForm)" #myForm="ngForm">
-      <div *ngIf="myForm.invalid" class="alert alert-danger">
-        Formulaire Invalide
-        <!-- <div *ngIf="myForm.errors.required" class="alert alert-danger">
-          Name is required.
-        </div>
-        <div *ngIf="myForm.errors.minlength" class="alert alert-danger">
+
+<h3 class="text-center my-5 font-weight-light">
+  Search by cards, or select set and/or classes
+</h3>
+<div class="container ">
+  <ng-container *ngIf="cards$ | async as cards">
+    <div class="row">
+      <form (ngSubmit)="submit(myForm)" #myForm="ngForm" class="col-6">
+        <!-- <div class="form-inline  "> -->
+        <!-- <div class="d-flex flex-row col-6 justify-content-center"> -->
+        <div class="form-row">
+          <div class="col-8">
+            <input
+              [(ngModel)]="query"
+              name="val1"
+              type="search"
+              required
+              minlength="3"
+              class="form-control"
+              placeholder="Search by card name"
+            />
+            <ng-container
+              *ngIf="myForm.submitted && myForm.controls.val1?.errors as errors"
+              class="alert alert-danger"
+            >
+              <ng-container *ngIf="errors.required">
+                <div class="help-text text-danger alert">
+                  Name is required.
+                </div>
+              </ng-container>
+              <ng-container *ngIf="errors.minlength">
+                <div class="help-text text-danger alert">
+                  Minimum 3 charactères.
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+          <!-- <div *ngIf="myForm.errors.minlength" class="alert alert-danger">
           Name must be at least 4 characters long.
         </div> -->
-      </div>
-
-      <div class="d-flex flex-row col-6 justify-content-center">
-        <input
-          [(ngModel)]="query"
-          name="val1"
-          type="search"
-          required
-          minlength="3"
-          class="form-control"
-        />
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-
-    <div class="list-group">
-      <a
-        *ngFor="let card of cards"
-        [routerLink]="['/', 'cards', card.cardId]"
-        class="linkCard"
-      >
-        <div class="list-group-item  list-group-item-action">
-          <h3>{{ card.name }}</h3>
-          <h6 [innerHTML]="card.text"></h6>
+          <div class="">
+            <button type="submit" class="btn btn-outline-success">
+              Submit
+            </button>
+          </div>
         </div>
-      </a>
-    </div>
+        <!-- </div> -->
+      </form>
 
-    <!-- <div class="table-responsive">
-      <table class="table table-border">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Set</th>
-            <th>Player Class</th>
-            <th>Effect</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let card of cards">
-            <td>
-              <a [routerLink]="['/', 'cards', card.cardId]">{{ card.dbfId }}</a>
-            </td>
-            <td>
-              <a [routerLink]="['/', 'cards', card.cardId]">{{ card.name }}</a>
-            </td>
-            <td>
-              <a [routerLink]="['/', 'cards', card.cardId]">{{
-                card.cardSet
-              }}</a>
-            </td>
-            <td>
-              <a [routerLink]="['/', 'cards', card.cardId]">{{
-                card.playerClass
-              }}</a>
-            </td>
-            <td>
-              <a [routerLink]="['/', 'cards', card.cardId]">{{ card.text }}</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div> -->
-  </div>
-</ng-container>
+      <ng-container *ngIf="info$ | async as info">
+        <form [formGroup]="filterForm" (ngSubmit)="filter()" class="col-6">
+          <!-- <div class="form-group"> -->
+          <div class="form-row">
+            <!-- <label for="set">Set Name</label> -->
+            <div class="col-4">
+              <select
+                id="set"
+                name="set"
+                class="form-control"
+                formControlName="set"
+              >
+                <option *ngFor="let setName of info.sets" [ngValue]="setName">
+                  {{ setName }}</option
+                >
+              </select>
+            </div>
+            <!-- <div class="form-group"> -->
+            <!-- <label for="classe"> Classe Name</label> -->
+            <div class="col-4">
+              <select
+                name="classe"
+                id="classe"
+                class="form-control"
+                formControlName="classe"
+              >
+                <option
+                  *ngFor="let classeName of info.classes"
+                  [ngValue]="classeName"
+                >
+                  {{ classeName }}</option
+                >
+              </select>
+            </div>
+            <div class="col-4">
+              <button class="btn btn-outline-success" type="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+
+      <div class="list-group col-12 mt-5">
+        <a
+          *ngFor="let card of cards"
+          [routerLink]="['/', 'cards', card.cardId]"
+          class="linkCard"
+        >
+          <div class="list-group-item  list-group-item-action">
+            <h3>{{ card.name }}</h3>
+            <h6 [innerHTML]="card.text"></h6>
+          </div>
+        </a>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- <div class="table-responsive">
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Set</th>
+        <th>Player Class</th>
+        <th>Effect</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let card of cards">
+        <td>
+          <a [routerLink]="['/', 'cards', card.cardId]">{{ card.dbfId }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['/', 'cards', card.cardId]">{{ card.name }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['/', 'cards', card.cardId]">{{
+            card.cardSet
+          }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['/', 'cards', card.cardId]">{{
+            card.playerClass
+          }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['/', 'cards', card.cardId]">{{ card.text }}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->

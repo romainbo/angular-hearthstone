@@ -1,22 +1,22 @@
-import { Directive, HostListener, HostBinding } from "@angular/core";
+import { Directive, HostListener, HostBinding } from '@angular/core';
 
 @Directive({
-  selector: "[appNavScroll]"
+  selector: '[appNavScroll]'
 })
 export class NavScrollDirective {
-  @HostBinding("class.show") show: boolean;
+  // @HostBinding("class.show") show: boolean;
 
-  @HostListener("window:scroll", ["$event"])
-  onScroll(event) {
-    console.log("scrolling", event.target.documentElement.scrollTop);
-    if (event.target.documentElement.scrollTop > 60) {
-      this.show = true;
-    } else {
-      this.show = false;
-    }
-  }
+  // @HostListener("window:scroll", ["$event"])
+  // onScroll(event) {
+  //   console.log("scrolling", event.target.documentElement.scrollTop);
+  //   if (event.target.documentElement.scrollTop > 60) {
+  //     this.show = true;
+  //   } else {
+  //     this.show = false;
+  //   }
+  // }
 
   constructor() {
-    console.log("Directive");
+    console.log('Directive');
   }
 }
